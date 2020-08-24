@@ -12,7 +12,10 @@ import com.twitter.hbc.core.{Client, Constants, HttpHosts}
 import com.twitter.hbc.httpclient.auth.OAuth1
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord, RecordMetadata}
 
-class TwitterProducer(msgQueue: LinkedBlockingDeque[String], topicName: String, topicAlias: String) extends Thread {
+class TwitterProducer(var msgQueue: LinkedBlockingDeque[String],
+                      var topicName: String,
+                      var topicAlias: String)
+  extends Thread {
 
   override def run(): Unit = {
     println(s"$topicAlias:: Creating twitter client================")

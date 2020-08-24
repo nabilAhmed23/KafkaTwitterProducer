@@ -13,7 +13,7 @@ object TwitterProducerMain {
   def main(args: Array[String]): Unit = {
     try {
       if (args.length != 2) {
-        throw new Exception(s"Incorrect number of arguments. Expected 2, got ${args.length}")
+        throw new Exception(s"Incorrect number of arguments. Expected 2 (properties file, topics), got ${args.length}")
       }
       kafkaProperties.load(new FileReader(args(0).trim))
       val kafkaTopics = args(1).trim.split(Utilities.CLI_TOPIC_SEPARATOR)
