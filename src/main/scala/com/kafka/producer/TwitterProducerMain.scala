@@ -8,14 +8,14 @@ import com.kafka.producer.utils.Utilities
 
 object TwitterProducerMain {
 
-  val kafkaProperties = new Properties()
-
   def main(args: Array[String]): Unit = {
     try {
       if (args.length != 2) {
-        throw new Exception(s"Incorrect number of arguments. Expected 2 (properties file, topics), got ${args.length}")
+        throw new Exception(s"Incorrect number of arguments. Expected 2 (properties file, pipe-separated topics), got ${args.length}")
       }
+      val kafkaProperties = new Properties()
       kafkaProperties.load(new FileReader(args(0).trim))
+
       val kafkaTopics = args(1).trim.split(Utilities.CLI_TOPIC_SEPARATOR)
       println("=================================================================\n")
       Utilities.createKafkaTopics(Utilities.getTopicProperties(kafkaProperties), kafkaTopics)
@@ -23,7 +23,7 @@ object TwitterProducerMain {
 
       for (topic <- kafkaTopics) {
         val topicNew = Utilities.replaceSpaces(topic)
-        val topicThread = new TwitterProducer(new LinkedBlockingDeque[String](100000), topic.trim, topicNew)
+        val topicThread = new TwitterProducer(kafkaProperties, new LinkedBlockingDeque[String](100000), topic.trim, topicNew)
         topicThread.setName(s"$topicNew-Twitter-Producer-Thread")
         topicThread.start()
       }

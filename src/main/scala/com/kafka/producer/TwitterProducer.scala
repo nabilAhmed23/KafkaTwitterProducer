@@ -12,19 +12,20 @@ import com.twitter.hbc.core.{Client, Constants, HttpHosts}
 import com.twitter.hbc.httpclient.auth.OAuth1
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord, RecordMetadata}
 
-class TwitterProducer(var msgQueue: LinkedBlockingDeque[String],
+class TwitterProducer(var kafkaProperties: Properties,
+                      var msgQueue: LinkedBlockingDeque[String],
                       var topicName: String,
                       var topicAlias: String)
   extends Thread {
 
   override def run(): Unit = {
     println(s"$topicAlias:: Creating twitter client================")
-    val client = createTwitterClient(TwitterProducerMain.kafkaProperties, msgQueue)
+    val client = createTwitterClient(kafkaProperties, msgQueue)
     client.connect()
     println(s"$topicAlias:: Twitter client connected successfully================")
 
     println(s"$topicAlias:: Creating producer================")
-    val producer = createKafkaProducer(Utilities.getProducerProperties(TwitterProducerMain.kafkaProperties))
+    val producer = createKafkaProducer(Utilities.getProducerProperties(kafkaProperties))
     println(s"$topicAlias:: Producer created successfully================")
 
     Runtime.getRuntime.addShutdownHook(new Thread(() => {
