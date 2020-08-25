@@ -40,7 +40,7 @@ class TwitterProducer(var kafkaProperties: Properties,
         if (msg != null) {
           synchronized {
             println(s"$topicAlias:: $msg")
-            println("Producing message================")
+            println(s"$topicAlias:: Producing message================")
             producer.send(new ProducerRecord[String, String](topicAlias, null, msg),
               (metadata: RecordMetadata, exception: Exception) => {
                 if (exception != null) {
@@ -57,7 +57,7 @@ class TwitterProducer(var kafkaProperties: Properties,
           client.stop()
       }
     }
-    throw new RuntimeException("Producer terminated")
+    throw new RuntimeException(s"$topicAlias:: Producer terminated")
   }
 
   def createTwitterClient(twitterProperties: Properties, msgQueue: BlockingQueue[String]): Client = {
