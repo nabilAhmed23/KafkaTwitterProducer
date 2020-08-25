@@ -35,27 +35,26 @@ class TwitterProducer(var kafkaProperties: Properties,
     }))
 
     while (!client.isDone) {
-      var msg: String = null
       try {
-        msg = msgQueue.poll(5, TimeUnit.SECONDS)
+        val msg = msgQueue.poll(5, TimeUnit.SECONDS)
+        if (msg != null) {
+          synchronized {
+            println(s"$topicAlias:: $msg")
+            println("Producing message================")
+            producer.send(new ProducerRecord[String, String](topicAlias, null, msg),
+              (metadata: RecordMetadata, exception: Exception) => {
+                if (exception != null) {
+                  println(s"$topicAlias:: Failed to produce message: $exception\n================")
+                } else {
+                  println(s"$topicAlias:: Message produced successfully================")
+                }
+              })
+          }
+        }
       } catch {
         case e: InterruptedException =>
           e.printStackTrace()
           client.stop()
-      }
-      if (msg != null) {
-        synchronized {
-          println(s"$topicAlias:: $msg")
-          println("Producing message================")
-          producer.send(new ProducerRecord[String, String](topicAlias, null, msg),
-            (metadata: RecordMetadata, exception: Exception) => {
-              if (exception != null) {
-                println(s"$topicAlias:: Failed to produce message: $exception\n================")
-              } else {
-                println(s"$topicAlias:: Message produced successfully================")
-              }
-            })
-        }
       }
     }
     throw new RuntimeException("Producer terminated")
