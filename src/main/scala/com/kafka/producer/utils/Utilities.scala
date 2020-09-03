@@ -15,57 +15,55 @@ object Utilities {
   val TWITTER_TOKEN_PROPERTY = "twitter.token"
   val TWITTER_TOKEN_SECRET_PROPERTY = "twitter.token.secret"
 
-  val BOOTSTRAP_SERVERS_PROPERTY = "bootstrap.servers"
-  val GROUP_ID_PROPERTY = "group.id"
-  val ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit"
-  val AUTO_COMMIT_INTERVAL_MS_PROPERTY = "auto.commit.interval.ms"
-  val KEY_DESERIALIZER_PROPERTY = "key.deserializer"
-  val VALUE_DESERIALIZER_PROPERTY = "value.deserializer"
+  private val BOOTSTRAP_SERVERS_PROPERTY = "bootstrap.servers"
+  private val GROUP_ID_PROPERTY = "group.id"
+  private val ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit"
+  private val AUTO_COMMIT_INTERVAL_MS_PROPERTY = "auto.commit.interval.ms"
+  private val KEY_DESERIALIZER_PROPERTY = "key.deserializer"
+  private val VALUE_DESERIALIZER_PROPERTY = "value.deserializer"
 
-  val KEY_SERIALIZER_PROPERTY = "key.serializer"
-  val VALUE_SERIALIZER_PROPERTY = "value.serializer"
-  val ENABLE_IDEMPOTENCE_PROPERTY = "enable.idempotence"
-  val COMPRESSION_TYPE_PROPERTY = "compression.type"
-  val LINGER_MS_PROPERTY = "linger.ms"
-  val BATCH_SIZE_PROPERTY = "batch.size"
+  private val KEY_SERIALIZER_PROPERTY = "key.serializer"
+  private val VALUE_SERIALIZER_PROPERTY = "value.serializer"
+  private val ENABLE_IDEMPOTENCE_PROPERTY = "enable.idempotence"
+  private val COMPRESSION_TYPE_PROPERTY = "compression.type"
+  private val LINGER_MS_PROPERTY = "linger.ms"
+  private val BATCH_SIZE_PROPERTY = "batch.size"
 
-  val DEFAULT_ENABLE_IDEMPOTENCE = "true"
-  val DEFAULT_COMPRESSION_TYPE = "snappy"
-  val DEFAULT_LINGER_MS = "20"
-  val DEFAULT_BATCH_SIZE = s"${64 * 1024}"
+  private val DEFAULT_ENABLE_IDEMPOTENCE = "true"
+  private val DEFAULT_COMPRESSION_TYPE = "snappy"
+  private val DEFAULT_LINGER_MS = "20"
+  private val DEFAULT_BATCH_SIZE = s"${64 * 1024}"
 
   def getTopicProperties(kafkaProperties: Properties): Properties = {
-    synchronized {
-      val propertyKeys = kafkaProperties.stringPropertyNames()
-      if (!(propertyKeys.contains(BOOTSTRAP_SERVERS_PROPERTY) &&
-        propertyKeys.contains(GROUP_ID_PROPERTY) &&
-        propertyKeys.contains(ENABLE_AUTO_COMMIT_PROPERTY) &&
-        propertyKeys.contains(AUTO_COMMIT_INTERVAL_MS_PROPERTY) &&
-        propertyKeys.contains(KEY_DESERIALIZER_PROPERTY) &&
-        propertyKeys.contains(VALUE_DESERIALIZER_PROPERTY))) {
-        throw new Exception("Properties file missing one of:" +
-          s"\n$BOOTSTRAP_SERVERS_PROPERTY" +
-          s"\n$GROUP_ID_PROPERTY" +
-          s"\n$ENABLE_AUTO_COMMIT_PROPERTY" +
-          s"\n$AUTO_COMMIT_INTERVAL_MS_PROPERTY" +
-          s"\n$KEY_DESERIALIZER_PROPERTY" +
-          s"\n$VALUE_DESERIALIZER_PROPERTY" +
-          s"\n================")
-      }
-
-      val topicProperties = new Properties()
-      topicProperties.setProperty(BOOTSTRAP_SERVERS_PROPERTY, kafkaProperties.getProperty(BOOTSTRAP_SERVERS_PROPERTY))
-      topicProperties.setProperty(GROUP_ID_PROPERTY, kafkaProperties.getProperty(GROUP_ID_PROPERTY))
-      topicProperties.setProperty(ENABLE_AUTO_COMMIT_PROPERTY, kafkaProperties.getProperty(ENABLE_AUTO_COMMIT_PROPERTY))
-      topicProperties.setProperty(AUTO_COMMIT_INTERVAL_MS_PROPERTY, kafkaProperties.getProperty(AUTO_COMMIT_INTERVAL_MS_PROPERTY))
-      topicProperties.setProperty(KEY_DESERIALIZER_PROPERTY, kafkaProperties.getProperty(KEY_DESERIALIZER_PROPERTY))
-      topicProperties.setProperty(VALUE_DESERIALIZER_PROPERTY, kafkaProperties.getProperty(VALUE_DESERIALIZER_PROPERTY))
-
-      println("Topic properties:")
-      topicProperties.stringPropertyNames().forEach(prop => println(s"$prop: ${topicProperties.getProperty(prop)}"))
-
-      topicProperties
+    val propertyKeys = kafkaProperties.stringPropertyNames()
+    if (!(propertyKeys.contains(BOOTSTRAP_SERVERS_PROPERTY) &&
+      propertyKeys.contains(GROUP_ID_PROPERTY) &&
+      propertyKeys.contains(ENABLE_AUTO_COMMIT_PROPERTY) &&
+      propertyKeys.contains(AUTO_COMMIT_INTERVAL_MS_PROPERTY) &&
+      propertyKeys.contains(KEY_DESERIALIZER_PROPERTY) &&
+      propertyKeys.contains(VALUE_DESERIALIZER_PROPERTY))) {
+      throw new Exception("Properties file missing one of:" +
+        s"\n$BOOTSTRAP_SERVERS_PROPERTY" +
+        s"\n$GROUP_ID_PROPERTY" +
+        s"\n$ENABLE_AUTO_COMMIT_PROPERTY" +
+        s"\n$AUTO_COMMIT_INTERVAL_MS_PROPERTY" +
+        s"\n$KEY_DESERIALIZER_PROPERTY" +
+        s"\n$VALUE_DESERIALIZER_PROPERTY" +
+        s"\n================")
     }
+
+    val topicProperties = new Properties()
+    topicProperties.setProperty(BOOTSTRAP_SERVERS_PROPERTY, kafkaProperties.getProperty(BOOTSTRAP_SERVERS_PROPERTY))
+    topicProperties.setProperty(GROUP_ID_PROPERTY, kafkaProperties.getProperty(GROUP_ID_PROPERTY))
+    topicProperties.setProperty(ENABLE_AUTO_COMMIT_PROPERTY, kafkaProperties.getProperty(ENABLE_AUTO_COMMIT_PROPERTY))
+    topicProperties.setProperty(AUTO_COMMIT_INTERVAL_MS_PROPERTY, kafkaProperties.getProperty(AUTO_COMMIT_INTERVAL_MS_PROPERTY))
+    topicProperties.setProperty(KEY_DESERIALIZER_PROPERTY, kafkaProperties.getProperty(KEY_DESERIALIZER_PROPERTY))
+    topicProperties.setProperty(VALUE_DESERIALIZER_PROPERTY, kafkaProperties.getProperty(VALUE_DESERIALIZER_PROPERTY))
+
+    println("Topic properties:")
+    topicProperties.stringPropertyNames().forEach(prop => println(s"$prop: ${topicProperties.getProperty(prop)}"))
+
+    topicProperties
   }
 
   def getProducerProperties(kafkaProperties: Properties): Properties = {
