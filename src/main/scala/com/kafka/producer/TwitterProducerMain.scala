@@ -28,7 +28,7 @@ object TwitterProducerMain {
         topicThread.start()
       }
     } catch {
-      case e: FileNotFoundException => println(s"File not found ${args(0).trim}================")
+      case _: FileNotFoundException => println(s"File not found ${args(0).trim}================")
       case e: RuntimeException => println(e.getMessage)
       case e: Exception => println(s"Something went wrong: $e\n================")
     }

@@ -42,7 +42,7 @@ class TwitterProducer(var kafkaProperties: Properties,
             println(s"$topicAlias:: $msg")
             println(s"$topicAlias:: Producing message================")
             producer.send(new ProducerRecord[String, String](topicAlias, null, msg),
-              (metadata: RecordMetadata, exception: Exception) => {
+              (_: RecordMetadata, exception: Exception) => {
                 if (exception != null) {
                   println(s"$topicAlias:: Failed to produce message: $exception\n================")
                 } else {
