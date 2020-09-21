@@ -6,38 +6,37 @@ This SBT project is used to stream tweets to Kafka based on the topic(s) passed 
 The arguments required to run the JAR file are as follows:  
 1) Location of Kafka `.properties` file:  
 The `.properties` file should contain the following properties:  
-`twitter.api.key`:          Twitter API Key  
-`twitter.api.secret`:       Twitter API Key Secret  
-`twitter.token`:            Twitter API Token  
-`twitter.token.secret`:     Twitter API Token Secret  
   
-`bootstrap.servers`:        Kafka Bootstrap Server(s) (comma-separated)  
-`group.id`:                 Topic Group ID  
-`enable.auto.commit`:       Enable Topic Auto Commit  
-`auto.commit.interval.ms`:  Topic Auto Commit Interval in ms  
-`key.deserializer`:         Fully Qualified Class Name of Kafka Key Deserializer  
-`value.deserializer`:       Fully Qualified Class Name of Kafka Value Deserializer  
-  
-`key.serializer`:           Fully Qualified Class Name of Kafka Key Serializer  
-`value.serializer`:         Fully Qualified Class Name of Kafka Value Serializer  
-`enable.idempotence`:       Enable Producer Idempotence, default = true  
-`compression.type`:         Producer Data Compression Algorithm, default = snappy  
-`linger.ms`:                20, default = 20  
-`batch.size`:               65536, default = 65536  
+| Property                      | Description                                            |  
+| :---------------------------- | :----------------------------------------------------- |  
+| `twitter.api.key`             | Twitter API Key                                        |  
+| `twitter.api.secret`          | Twitter API Key Secret                                 |  
+| `twitter.token`               | Twitter API Token                                      |  
+| `twitter.token.secret`        | Twitter API Token Secret                               |  
+| `bootstrap.servers`           | Kafka Bootstrap Server(s) (comma-separated)            |  
+| `group.id`                    | Topic Group ID                                         |  
+| `enable.auto.commit`          | Enable Topic Auto Commit                               |  
+| `auto.commit.interval.ms`     | Topic Auto Commit Interval in ms                       |  
+| `key.deserializer`            | Fully Qualified Class Name of Kafka Key Deserializer   |  
+| `value.deserializer`          | Fully Qualified Class Name of Kafka Value Deserializer |  
+| `key.serializer`              | Fully Qualified Class Name of Kafka Key Serializer     |  
+| `value.serializer`            | Fully Qualified Class Name of Kafka Value Serializer   |  
+| `enable.idempotence`          | Enable Producer Idempotence, default = true            |  
+| `compression.type`            | Producer Data Compression Algorithm, default = snappy  |  
+| `linger.ms`                   | Producer Linger in ms, default = 20                    |  
+| `batch.size`                  | Producer Message Batch Size, default = 65536           |  
   
 Example:  
 `twitter.api.key=TwitterApiKey`  
 `twitter.api.secret=TwitterApiKeySecret`  
 `twitter.token=TwitterApiToken`  
 `twitter.token.secret=TwitterApiTokenSecret`  
-  
 `bootstrap.servers=localhost:9092,localhost:9093`  
 `group.id=twitter-producer`  
 `enable.auto.commit=true`  
 `auto.commit.interval.ms=1000`  
 `key.deserializer=org.apache.kafka.common.serialization.StringDeserializer`  
 `value.deserializer=org.apache.kafka.common.serialization.StringDeserializer`  
-  
 `key.serializer=org.apache.kafka.common.serialization.StringSerializer`  
 `value.serializer=org.apache.kafka.common.serialization.StringSerializer`  
 `enable.idempotence=true`  
@@ -50,7 +49,7 @@ Example:
   
 Syntax:  
 `java -jar <JAR_file_build> <properties_file> <list_of_topics>`  
-
+  
 Example:  
 `java -jar /path/to/KafkaTwitterProducer.jar /path/to/kafka.properties "apache kafka|apache spark|scala"`  
   
